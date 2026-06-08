@@ -44,7 +44,7 @@ export default function TalentGrowth() {
         </div>
       </div>
 
-      <div className="grid-5-7 mb-24">
+      <div className="grid-5-7 mb-24" style={{ alignItems: 'start' }}>
         <div className="card">
           <div className="card-title">Promotion Readiness</div>
           <ResponsiveContainer width="100%" height={180}>
