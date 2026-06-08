@@ -1,0 +1,8 @@
+services:
+  cv360:
+    build:
+      context: ./cv360
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    restart: unless-stopped

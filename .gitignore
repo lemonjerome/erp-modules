@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+cv360/node_modules/
+
+# Build output
+dist/
+cv360/dist/
+build/
+
+# Environment variables
+.env
+.env.*
+*.local
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+
+# Markdown — keep only README.md files
+*.md
+!README.md
+!cv360/README.md
+
+# Other assets
+*.pdf
