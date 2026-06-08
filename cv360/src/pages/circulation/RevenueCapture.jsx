@@ -22,6 +22,29 @@ export default function RevenueCapture() {
 
   return (
     <div>
+      <div className="kpi-grid mb-24">
+        <div className="kpi-card">
+          <div className="kpi-label">Total Events Today</div>
+          <div className="kpi-value">894</div>
+          <div className="kpi-delta up">▲ +7.2% vs yesterday</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">Total Amount Captured</div>
+          <div className="kpi-value kpi-accent">₱2.14M</div>
+          <div className="kpi-delta up">▲ Active capture</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">Unmatched Events</div>
+          <div className="kpi-value">47</div>
+          <div className="kpi-delta down">▼ Requires attention</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">Auto-Capture Rate</div>
+          <div className="kpi-value">98.2%</div>
+          <div className="kpi-delta up">▲ +0.4 pts</div>
+        </div>
+      </div>
+
       <div className="card mb-24">
         <div className="card-title">Revenue Signal Sources</div>
         <div className="signal-grid">
@@ -102,28 +125,6 @@ export default function RevenueCapture() {
         </div>
       </div>
 
-      <div className="kpi-grid">
-        <div className="kpi-card">
-          <div className="kpi-label">Total Events Today</div>
-          <div className="kpi-value">894</div>
-          <div className="kpi-delta up">▲ +7.2% vs yesterday</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Total Amount Captured</div>
-          <div className="kpi-value kpi-accent">₱2.14M</div>
-          <div className="kpi-delta up">▲ Active capture</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Unmatched Events</div>
-          <div className="kpi-value">47</div>
-          <div className="kpi-delta down">▼ Requires attention</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Auto-Capture Rate</div>
-          <div className="kpi-value">98.2%</div>
-          <div className="kpi-delta up">▲ +0.4 pts</div>
-        </div>
-      </div>
     </div>
   );
 }
