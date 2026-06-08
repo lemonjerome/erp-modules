@@ -62,9 +62,10 @@ export default function WorkforceSignals() {
                   alignItems: 'center',
                   gap: 14,
                   padding: '14px 16px',
-                  background: 'var(--bg)',
+                  background: `radial-gradient(circle 55px at calc(100% + 12px) -12px, ${s.color}0A 0%, transparent 65%), var(--bg)`,
                   borderRadius: 10,
                   borderLeft: `4px solid ${s.color}`,
+                  overflow: 'hidden',
                 }}>
                   <div style={{
                     width: 42, height: 42, borderRadius: '50%',

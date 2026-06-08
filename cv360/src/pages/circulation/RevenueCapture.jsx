@@ -51,8 +51,11 @@ export default function RevenueCapture() {
           {signalSources.map((s, i) => (
             <div key={i} style={{
               display: 'flex', alignItems: 'center', gap: 12,
-              padding: '14px 16px', background: 'var(--bg)', borderRadius: 10,
+              padding: '14px 16px',
+              background: `radial-gradient(circle 55px at calc(100% + 12px) -12px, ${s.color}0A 0%, transparent 65%), var(--bg)`,
+              borderRadius: 10,
               borderLeft: `4px solid ${s.color}`,
+              overflow: 'hidden',
             }}>
               <div style={{
                 width: 40, height: 40, borderRadius: '50%',

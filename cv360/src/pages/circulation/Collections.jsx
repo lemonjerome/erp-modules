@@ -1,4 +1,4 @@
-import { AlertTriangle, Phone, Mail, BarChart3, MessageCircle, CheckCircle2 } from 'lucide-react';
+import { AlertTriangle, Phone, Mail, BarChart3, MessageCircle, CheckCircle2, Siren } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Cell } from 'recharts';
 import { agingBuckets } from '../../data/circulation';
 
@@ -10,6 +10,7 @@ const balances = [
 ];
 
 const collectionActions = [
+  { type: 'red', Icon: Siren, text: 'Write-Off Risk: Zamboanga West – 94 Days Past Due', sub: '90+ day aging · ₱197,200 outstanding · Immediate legal review required', priority: 'Critical' },
   { type: 'red', Icon: AlertTriangle, text: 'Escalate: Maxicare HMO Account', sub: 'Overdue 62 days · ₱184,200 outstanding', priority: 'High' },
   { type: 'red', Icon: Phone, text: 'Follow Up: PrimeHealth Corporate', sub: 'Overdue 45 days · ₱97,800 outstanding', priority: 'High' },
   { type: 'warn', Icon: Mail, text: 'Send Reminder: Cebu North Balances', sub: '31–60 days aging · ₱61,400 outstanding', priority: 'Medium' },
@@ -103,7 +104,7 @@ export default function Collections() {
               <div className="action-text">{a.text}</div>
               <div className="action-sub">{a.sub}</div>
             </div>
-            <span className={`badge ${a.priority === 'High' ? 'badge-red' : a.priority === 'Medium' ? 'badge-yellow' : 'badge-green'}`}>
+            <span className={`badge ${a.priority === 'Critical' ? 'badge-critical' : a.priority === 'High' ? 'badge-red' : a.priority === 'Medium' ? 'badge-yellow' : 'badge-green'}`}>
               {a.priority}
             </span>
           </div>

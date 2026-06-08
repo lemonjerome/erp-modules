@@ -64,10 +64,13 @@ export default function WorkforceIntelligence() {
           {rootCauses.map((r, i) => (
             <div key={i} style={{ marginBottom: 16 }}>
               <div style={{
-                background: r.severity === 'high' ? 'rgba(229,62,62,0.03)' : 'rgba(246,173,85,0.03)',
+                background: r.severity === 'high'
+                  ? 'radial-gradient(circle 60px at calc(100% + 15px) -15px, rgba(229,62,62,0.045) 0%, transparent 65%), rgba(229,62,62,0.025)'
+                  : 'radial-gradient(circle 60px at -15px calc(100% + 15px), rgba(246,173,85,0.05) 0%, transparent 65%), rgba(246,173,85,0.025)',
                 border: `1px solid ${r.severity === 'high' ? 'rgba(229,62,62,0.15)' : 'rgba(246,173,85,0.15)'}`,
                 borderRadius: 8,
-                padding: '12px 14px'
+                padding: '12px 14px',
+                overflow: 'hidden',
               }}>
                 <div className="flex items-center justify-between mb-8">
                   <div className="text-sm font-medium text-navy">{r.issue}</div>

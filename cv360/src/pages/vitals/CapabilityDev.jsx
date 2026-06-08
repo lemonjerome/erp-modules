@@ -77,7 +77,7 @@ export default function CapabilityDev() {
               <Tooltip />
               <Legend wrapperStyle={{ fontSize: 12 }} />
               <Bar dataKey="Current" fill="#66b9f4" radius={[0, 2, 2, 0]} name="Current Level" />
-              <Bar dataKey="Required" fill="#002d72" radius={[0, 2, 2, 0]} name="Required Level" fillOpacity={0.25} />
+              <Bar dataKey="Required" fill="#002d72" radius={[0, 2, 2, 0]} name="Required Level" />
             </BarChart>
           </ResponsiveContainer>
           <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(229,62,62,0.04)', borderRadius: 6, border: '1px solid rgba(229,62,62,0.12)' }}>
@@ -115,8 +115,7 @@ export default function CapabilityDev() {
         <div className="card-title">Learning Recommendations</div>
         <div className="grid-2">
           {(roleRecs.length > 0 ? roleRecs : learningRecs.slice(0, 4)).map((r, i) => (
-            <div key={i} style={{ padding: '14px 16px', background: 'var(--bg)', borderRadius: 10, border: '1.5px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: -20, right: -20, width: 60, height: 60, borderRadius: '50%', background: 'rgba(0,179,136,0.08)' }} />
+            <div key={i} style={{ padding: '14px 16px', background: 'radial-gradient(circle 60px at calc(100% + 18px) -18px, rgba(0,179,136,0.055) 0%, transparent 65%), radial-gradient(circle 26px at -6px calc(100% + 6px), rgba(0,45,114,0.035) 0%, transparent 65%), var(--bg)', borderRadius: 10, border: '1.5px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
               <div className="flex justify-between items-start mb-8">
                 <div className="text-sm font-medium text-navy" style={{ paddingRight: 8 }}>{r.title}</div>
                 <span className={`badge ${typeColors[r.type] || 'badge-gray'}`} style={{ flexShrink: 0 }}>{r.type}</span>
