@@ -393,3 +393,68 @@ a { text-decoration: none; color: inherit; }
 .w-full { width: 100%; }
 
 .recharts-default-tooltip { border-radius: 8px !important; box-shadow: var(--shadow) !important; font-size: 0.82rem !important; font-family: 'Roboto', sans-serif !important; }
+
+/* ─── Responsive ─────────────────────────────── */
+
+/* Tablet: 901–1100px — narrow sidebar, grids compress */
+@media (max-width: 1100px) {
+  :root { --sidebar-w: 200px; }
+  .page-content { padding: 20px 22px; }
+  .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+}
+
+/* Small tablet: 769–900px — grids collapse to single column */
+@media (max-width: 900px) {
+  :root { --sidebar-w: 180px; }
+  .grid-7-5,
+  .grid-5-7 { grid-template-columns: 1fr; }
+  .grid-2   { grid-template-columns: 1fr; }
+  .grid-3   { grid-template-columns: 1fr 1fr; }
+  .risk-cards { grid-template-columns: repeat(3, 1fr); }
+  .page-content { padding: 16px 18px; }
+}
+
+/* Mobile: ≤768px — hide sidebar, full-width stack */
+@media (max-width: 768px) {
+  :root { --sidebar-w: 0px; }
+
+  .sidebar { display: none; }
+  .main-content { width: 100%; }
+
+  .page-content { padding: 14px 14px; }
+  .topbar { padding: 0 14px; gap: 10px; }
+  .topbar-date { display: none; }
+  .topbar-title { font-size: 0.88rem; }
+
+  h1 { font-size: 1.2rem; }
+  h2 { font-size: 1rem; }
+
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .grid-7-5,
+  .grid-5-7,
+  .grid-2   { grid-template-columns: 1fr; }
+  .grid-3   { grid-template-columns: 1fr; }
+  .risk-cards { grid-template-columns: 1fr; }
+
+  .score-circle.large { width: 110px; height: 110px; border-width: 8px; }
+  .score-circle.large .score-circle-val { font-size: 1.8rem; }
+
+  .data-table { font-size: 0.78rem; }
+  .data-table th, .data-table td { padding: 8px 10px; }
+
+  .tab-strip { overflow-x: auto; }
+  .tab-btn { white-space: nowrap; }
+
+  .role-pills { overflow-x: auto; flex-wrap: nowrap; }
+  .role-pill { white-space: nowrap; }
+
+  .card { padding: 14px; }
+  .topbar-badge { display: none; }
+}
+
+/* Small mobile: ≤480px */
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .kpi-value { font-size: 1.3rem; }
+  .risk-cards { grid-template-columns: 1fr; }
+}

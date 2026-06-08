@@ -5,11 +5,11 @@ import { transactions, revenueSources } from '../../data/circulation';
 const statusClass = { Matched: 'badge-green', Unmatched: 'badge-red', Suggested: 'badge-yellow' };
 
 const signalSources = [
-  { Icon: Monitor, name: 'Teleconsultation', count: 412, label: 'events today' },
-  { Icon: Pill, name: 'Pharmacy Sales', count: 287, label: 'transactions' },
-  { Icon: Microscope, name: 'Diagnostics', count: 94, label: 'lab orders' },
-  { Icon: Shield, name: 'Insurance Claims', count: 63, label: 'claim events' },
-  { Icon: Handshake, name: 'Partner Services', count: 38, label: 'referrals' },
+  { Icon: Monitor, name: 'Teleconsultation', count: 412, label: 'events today', trend: '+5.2%', color: 'var(--navy)' },
+  { Icon: Pill, name: 'Pharmacy Sales', count: 287, label: 'transactions', trend: '+3.1%', color: '#00b388' },
+  { Icon: Microscope, name: 'Diagnostics', count: 94, label: 'lab orders', trend: '+1.4%', color: '#66b9f4' },
+  { Icon: Shield, name: 'Insurance Claims', count: 63, label: 'claim events', trend: '-2.3%', color: '#f6ad55' },
+  { Icon: Handshake, name: 'Partner Services', count: 38, label: 'referrals', trend: '+0.8%', color: '#e53e3e' },
 ];
 
 export default function RevenueCapture() {
@@ -47,15 +47,33 @@ export default function RevenueCapture() {
 
       <div className="card mb-24">
         <div className="card-title">Revenue Signal Sources</div>
-        <div className="signal-grid">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12 }}>
           {signalSources.map((s, i) => (
-            <div className="signal-card" key={i}>
-              <div className="signal-icon-box">
-                <s.Icon size={22} strokeWidth={1.75} />
+            <div key={i} style={{
+              display: 'flex', alignItems: 'center', gap: 12,
+              padding: '14px 16px', background: 'var(--bg)', borderRadius: 10,
+              borderLeft: `4px solid ${s.color}`,
+            }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: '50%',
+                background: `${s.color}18`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: s.color, flexShrink: 0,
+              }}>
+                <s.Icon size={18} strokeWidth={1.75} />
               </div>
-              <div className="signal-name">{s.name}</div>
-              <div className="signal-count">{s.count.toLocaleString()}</div>
-              <div className="signal-label">{s.label}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="text-sm font-medium text-navy" style={{ marginBottom: 2 }}>{s.name}</div>
+                <div className="text-xs text-muted">{s.label}</div>
+              </div>
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                <div style={{ fontFamily: "'Libre Baskerville', serif", fontSize: '1.1rem', fontWeight: 700, color: s.color }}>
+                  {s.count.toLocaleString()}
+                </div>
+                <div className="text-xs" style={{ color: s.trend.startsWith('+') ? '#00875f' : '#c53030' }}>
+                  {s.trend}
+                </div>
+              </div>
             </div>
           ))}
         </div>
