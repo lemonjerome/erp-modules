@@ -1,43 +1,92 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
 import KPICard from '../../components/KPICard';
 import InsightPanel from '../../components/InsightPanel';
-import { performanceTrend, riskEmployees } from '../../data/vitals';
+import { performanceTrend, riskEmployees, kpiFramework, skillGaps } from '../../data/vitals';
+
+// --- computed from data ---
+function roleScore(kpis) {
+  const totalWeight = kpis.reduce((s, k) => s + k.weight, 0);
+  return kpis.reduce((s, k) => s + k.score * k.weight, 0) / totalWeight;
+}
+
+const roleScores = {
+  doctors:  roleScore(kpiFramework.doctors),
+  support:  roleScore(kpiFramework.support),
+  pharmacy: roleScore(kpiFramework.pharmacy),
+  managers: roleScore(kpiFramework.managers),
+};
+
+const kpiAchievementRate = Math.round(
+  Object.values(roleScores).reduce((s, v) => s + v, 0) / Object.values(roleScores).length
+);
+
+function roleCapability(skills) {
+  return skills.reduce((s, sk) => s + sk.current, 0) / skills.length;
+}
+
+const capabilityScore = Math.round(
+  (roleCapability(skillGaps.doctors) +
+   roleCapability(skillGaps.support) +
+   roleCapability(skillGaps.pharmacy) +
+   roleCapability(skillGaps.managers)) / 4
+);
+
+// Satisfaction: avg of patient/customer satisfaction KPIs across doctor + support roles
+const satisfactionScore =
+  (kpiFramework.doctors.find(k => k.kpi.includes('Satisfaction'))?.score ?? 82) / 2 +
+  (kpiFramework.support.find(k => k.kpi.includes('Satisfaction'))?.score ?? 79) / 2;
+
+const ATTENDANCE_RATE = 85; // estimated — attendance signal not aggregated into a single metric in dataset
+
+// WH Score formula (from DEPLOYMENT_STORIES VIT-001):
+// KPI Achievement 40% | Capability Health 25% | Satisfaction 20% | Attendance 15%
+const whScore = Math.round(
+  kpiAchievementRate * 0.40 +
+  capabilityScore    * 0.25 +
+  satisfactionScore  * 0.20 +
+  ATTENDANCE_RATE    * 0.15
+);
 
 const radarData = [
-  { subject: 'Doctors', score: 87 },
-  { subject: 'Support', score: 79 },
-  { subject: 'Pharmacy', score: 91 },
-  { subject: 'Managers', score: 81 },
+  { subject: 'Doctors',  score: Math.round(roleScores.doctors) },
+  { subject: 'Support',  score: Math.round(roleScores.support) },
+  { subject: 'Pharmacy', score: Math.round(roleScores.pharmacy) },
+  { subject: 'Managers', score: Math.round(roleScores.managers) },
 ];
 
 const insights = [
   { type: 'warning', text: 'Customer Support satisfaction dropped 6 pts over 3 months — communication skill gap detected.' },
   { type: 'positive', text: 'Pharmacy Staff posting highest capability score at 91 — strong fulfillment discipline.' },
   { type: 'negative', text: 'Cebu North and General Santos branches showing compounding workforce risk.' },
-  { type: 'info', text: '6 employees flagged for immediate intervention (burnout, turnover, performance risk).' },
+  { type: 'info', text: `${riskEmployees.length} employees flagged for immediate intervention (burnout, turnover, performance risk).` },
   { type: 'positive', text: 'Makati Central Branch Manager Nina Corpuz is promotion-ready — leadership pipeline strong.' },
 ];
 
-export default function VitalsDashboard() {
+export default function VitalsDashboard({ setPage }) {
+  const ringColor = whScore >= 85 ? '#00b388' : whScore >= 70 ? '#f6ad55' : '#e53e3e';
+
   return (
     <div>
       <div className="flex items-center gap-12 mb-24">
-        <div className="score-circle large">
-          <div className="score-circle-val">82</div>
+        <div className="score-circle large" style={{ borderColor: ringColor }}>
+          <div className="score-circle-val" style={{ color: ringColor }}>{whScore}</div>
           <div className="score-circle-label">WH Score</div>
         </div>
         <div>
           <h1>Workforce Health Overview</h1>
           <p className="text-muted text-sm mt-4">Workforce intelligence status as of June 8, 2026</p>
+          <p className="text-xs text-muted mt-4" style={{ color: '#94a3b8' }}>
+            Score = KPI Achievement (40%) · Capability Health (25%) · Satisfaction (20%) · Attendance (15%)
+          </p>
         </div>
       </div>
 
       <div className="kpi-grid">
-        <KPICard label="Workforce Health Score" value="82/100" delta="+2 pts vs last month" deltaType="up" accent />
-        <KPICard label="KPI Achievement Rate" value="84%" delta="+1.4 pts" deltaType="up" />
-        <KPICard label="Capability Health Score" value="79/100" delta="-1 pt (skill gaps growing)" deltaType="down" />
-        <KPICard label="Employee Risk Count" value="6" delta="▼ Immediate attention needed" deltaType="down" />
-        <KPICard label="Learning Completion" value="76%" delta="+4 pts" deltaType="up" />
+        <KPICard label="Workforce Health Score" value={`${whScore}/100`} delta="+2 pts vs last month" deltaType="up" accent />
+        <KPICard label="KPI Achievement Rate" value={`${kpiAchievementRate}%`} delta="+1.4 pts" deltaType="up" />
+        <KPICard label="Capability Health Score" value={`${capabilityScore}/100`} delta="-1 pt (skill gaps growing)" deltaType="down" />
+        <KPICard label="Employee Risk Count" value={String(riskEmployees.length)} delta="Immediate attention needed" deltaType="neutral" />
+        <KPICard label="Learning Completion" value="76%" delta="+4 pts this quarter" deltaType="up" />
       </div>
 
       <div className="grid-7-5 mb-24">
@@ -93,8 +142,10 @@ export default function VitalsDashboard() {
                   <td className="text-xs text-muted">{e.role}</td>
                   <td className="text-xs">{e.branch}</td>
                   <td>
-                    <span className={`badge ${e.risk === 'Burnout' ? 'badge-red' : e.risk === 'Turnover' ? 'badge-yellow' : 'badge-warn'}`}
-                      style={e.risk === 'Performance' ? { background: 'rgba(102,185,244,0.15)', color: '#0066b3' } : {}}>
+                    <span
+                      className={`badge ${e.risk === 'Burnout' ? 'badge-red' : e.risk === 'Turnover' ? 'badge-yellow' : ''}`}
+                      style={e.risk === 'Performance' ? { background: 'rgba(102,185,244,0.15)', color: '#0066b3' } : {}}
+                    >
                       {e.risk}
                     </span>
                   </td>
@@ -106,7 +157,7 @@ export default function VitalsDashboard() {
                       <span className="text-xs">{e.score}</span>
                     </div>
                   </td>
-                  <td className="text-xs text-teal font-medium" style={{ cursor: 'pointer' }}>View →</td>
+                  <td className="text-xs text-teal font-medium" style={{ cursor: 'pointer' }} onClick={() => setPage('vitals-intelligence')}>View →</td>
                 </tr>
               ))}
             </tbody>

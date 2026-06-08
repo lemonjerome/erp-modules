@@ -2,8 +2,15 @@ import { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { branchWorkforce } from '../../data/vitals';
 
+// --- computed from data ---
+const topBranch = branchWorkforce.reduce((max, b) => b.healthScore > max.healthScore ? b : max, branchWorkforce[0]);
+const avgHealth = (branchWorkforce.reduce((s, b) => s + b.healthScore, 0) / branchWorkforce.length).toFixed(1);
+const AT_RISK_THRESHOLD = 75;
+const atRiskBranches = branchWorkforce.filter(b => b.healthScore < AT_RISK_THRESHOLD);
+const totalRiskFlags = branchWorkforce.reduce((s, b) => s + b.risks, 0);
+
 function mockTrend(base) {
-  return ['Jan','Feb','Mar','Apr','May','Jun'].map((m, i) => ({
+  return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map((m, i) => ({
     month: m,
     score: Math.min(100, Math.round(base * (0.9 + i * 0.02 + Math.random() * 0.03))),
   }));
@@ -28,22 +35,22 @@ export default function BranchWorkforce() {
       <div className="kpi-grid mb-24">
         <div className="kpi-card">
           <div className="kpi-label">Highest WH Score</div>
-          <div className="kpi-value kpi-accent">Makati Central</div>
-          <div className="kpi-delta up">▲ Score: 89</div>
+          <div className="kpi-value kpi-accent">{topBranch.branch}</div>
+          <div className="kpi-delta up">▲ Score: {topBranch.healthScore}</div>
         </div>
         <div className="kpi-card">
           <div className="kpi-label">Network Avg Health</div>
-          <div className="kpi-value">79.6</div>
-          <div className="kpi-delta up">▲ Across 20 branches</div>
+          <div className="kpi-value">{avgHealth}</div>
+          <div className="kpi-delta up">▲ Across {branchWorkforce.length} branches</div>
         </div>
         <div className="kpi-card">
           <div className="kpi-label">Branches at Risk</div>
-          <div className="kpi-value">3</div>
-          <div className="kpi-delta down">▼ Score &lt;72 threshold</div>
+          <div className="kpi-value">{atRiskBranches.length}</div>
+          <div className="kpi-delta down">▼ Score &lt;{AT_RISK_THRESHOLD} threshold</div>
         </div>
         <div className="kpi-card">
           <div className="kpi-label">Total Risk Flags</div>
-          <div className="kpi-value">15</div>
+          <div className="kpi-value">{totalRiskFlags}</div>
           <div className="kpi-delta down">▼ Across all branches</div>
         </div>
       </div>
@@ -53,7 +60,7 @@ export default function BranchWorkforce() {
           <div className="flex items-center justify-between mb-16">
             <div className="card-title" style={{ margin: 0 }}>Branch Workforce Rankings</div>
             <div className="flex gap-8">
-              {[['healthScore','WH Score'],['kpiRate','KPI Rate'],['capabilityScore','Capability'],['learningCompletion','Learning']].map(([k, l]) => (
+              {[['healthScore', 'WH Score'], ['kpiRate', 'KPI Rate'], ['capabilityScore', 'Capability'], ['learningCompletion', 'Learning']].map(([k, l]) => (
                 <button key={k} className={`role-pill${sortKey === k ? ' active' : ''}`} onClick={() => setSortKey(k)}>
                   {l}
                 </button>
@@ -84,7 +91,7 @@ export default function BranchWorkforce() {
                   <td>
                     <div className="flex items-center gap-8">
                       <div className="progress-bar" style={{ width: 50 }}>
-                        <div className="progress-fill" style={{ width: `${b.healthScore}%`, background: b.healthScore >= 85 ? '#00b388' : b.healthScore >= 75 ? '#66b9f4' : '#f6ad55' }} />
+                        <div className="progress-fill" style={{ width: `${b.healthScore}%`, background: b.healthScore >= 85 ? '#00b388' : b.healthScore >= AT_RISK_THRESHOLD ? '#66b9f4' : '#f6ad55' }} />
                       </div>
                       <span className="text-xs font-bold">{b.healthScore}</span>
                     </div>
@@ -118,20 +125,22 @@ export default function BranchWorkforce() {
 
             <div className="grid-2 mb-16" style={{ gap: 8 }}>
               {[
-                ['WH Score', detail.healthScore, detail.healthScore >= 85 ? 'badge-green' : detail.healthScore >= 75 ? 'badge-blue' : 'badge-yellow'],
+                ['WH Score', detail.healthScore, detail.healthScore >= 85 ? 'badge-green' : detail.healthScore >= AT_RISK_THRESHOLD ? 'badge-blue' : 'badge-yellow'],
                 ['KPI Rate', `${detail.kpiRate}%`, 'badge-navy'],
                 ['Capability', detail.capabilityScore, 'badge-blue'],
                 ['Risk Flags', detail.risks, detail.risks >= 3 ? 'badge-red' : detail.risks > 0 ? 'badge-yellow' : 'badge-green'],
-              ].map(([l, v], i) => (
-                <div key={i} style={{ background: 'var(--bg)', borderRadius: 8, padding: '10px 12px' }}>
+              ].map(([l, v, badgeCls]) => (
+                <div key={l} style={{ background: 'var(--bg)', borderRadius: 8, padding: '10px 12px' }}>
                   <div className="text-xs text-muted">{l}</div>
-                  <div className="font-bold text-navy mt-4">{v}</div>
+                  <div className="font-bold text-navy mt-4">
+                    <span className={`badge ${badgeCls}`}>{v}</span>
+                  </div>
                 </div>
               ))}
             </div>
 
-            <div className="card-title" style={{ marginBottom: 8 }}>Health Score Trend</div>
-            <ResponsiveContainer width="100%" height={120}>
+            <div className="card-title" style={{ marginBottom: 8 }}>WH Score Trend</div>
+            <ResponsiveContainer width="100%" height={110}>
               <LineChart data={trendData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e0e6ef" />
                 <XAxis dataKey="month" tick={{ fontSize: 10 }} />
@@ -141,14 +150,14 @@ export default function BranchWorkforce() {
               </LineChart>
             </ResponsiveContainer>
 
-            <div className="card-title mt-16" style={{ marginBottom: 8 }}>Skill Gaps</div>
+            <div className="card-title" style={{ margin: '16px 0 8px' }}>Skill Gap Snapshot</div>
             <ResponsiveContainer width="100%" height={100}>
               <BarChart data={skillData} layout="vertical">
                 <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 9 }} />
-                <YAxis type="category" dataKey="name" tick={{ fontSize: 9 }} width={90} />
+                <YAxis type="category" dataKey="name" tick={{ fontSize: 9 }} width={80} />
                 <Tooltip />
-                <Bar dataKey="current" fill="#66b9f4" name="Current" radius={[0, 2, 2, 0]} />
-                <Bar dataKey="required" fill="#002d72" fillOpacity={0.2} name="Required" radius={[0, 2, 2, 0]} />
+                <Bar dataKey="current" fill="#66b9f4" radius={[0, 2, 2, 0]} name="Current" />
+                <Bar dataKey="required" fill="#002d72" fillOpacity={0.2} radius={[0, 2, 2, 0]} name="Required" />
               </BarChart>
             </ResponsiveContainer>
           </div>

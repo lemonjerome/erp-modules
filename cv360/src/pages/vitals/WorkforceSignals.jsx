@@ -20,6 +20,29 @@ const repository = [
 export default function WorkforceSignals() {
   return (
     <div>
+      <div className="kpi-grid mb-24">
+        <div className="kpi-card">
+          <div className="kpi-label">Total Signals Today</div>
+          <div className="kpi-value kpi-accent">1,480</div>
+          <div className="kpi-delta up">▲ +8.4% vs yesterday</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">Active Employees Tracked</div>
+          <div className="kpi-value">168</div>
+          <div className="kpi-delta neutral">● Out of 170 total</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">Anomaly Signals</div>
+          <div className="kpi-value">14</div>
+          <div className="kpi-delta down">▼ Requires review</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">Signal Capture Rate</div>
+          <div className="kpi-value">98.8%</div>
+          <div className="kpi-delta up">▲ All connectors healthy</div>
+        </div>
+      </div>
+
       <div className="card mb-24">
         <div className="card-title">Workforce Signal Sources</div>
         <div className="signal-grid">
@@ -77,28 +100,6 @@ export default function WorkforceSignals() {
         </div>
       </div>
 
-      <div className="kpi-grid">
-        <div className="kpi-card">
-          <div className="kpi-label">Total Signals Today</div>
-          <div className="kpi-value kpi-accent">1,480</div>
-          <div className="kpi-delta up">▲ +8.4% vs yesterday</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Active Employees Tracked</div>
-          <div className="kpi-value">168</div>
-          <div className="kpi-delta neutral">● Out of 170 total</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Anomaly Signals</div>
-          <div className="kpi-value">14</div>
-          <div className="kpi-delta down">▼ Requires review</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Signal Capture Rate</div>
-          <div className="kpi-value">98.8%</div>
-          <div className="kpi-delta up">▲ All connectors healthy</div>
-        </div>
-      </div>
     </div>
   );
 }

@@ -4,8 +4,14 @@ import { branches } from '../../data/circulation';
 
 const sortKeys = { revenue: 'Revenue', collectionRate: 'Collection Rate', growth: 'Growth' };
 
+// --- computed from data ---
+const totalRevenue = branches.reduce((s, b) => s + b.revenue, 0);
+const avgCollectionRate = (branches.reduce((s, b) => s + b.collectionRate, 0) / branches.length).toFixed(1);
+const topBranch = branches.reduce((max, b) => b.revenue > max.revenue ? b : max, branches[0]);
+const negativGrowthBranches = branches.filter(b => b.growth < 0);
+
 function mockTrend(base) {
-  return ['Jan','Feb','Mar','Apr','May','Jun'].map((m, i) => ({
+  return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map((m, i) => ({
     month: m,
     revenue: +(base * (0.85 + i * 0.03 + Math.random() * 0.05)).toFixed(0),
   }));
@@ -24,23 +30,23 @@ export default function BranchFinancials() {
       <div className="kpi-grid mb-24">
         <div className="kpi-card">
           <div className="kpi-label">Total Branch Revenue</div>
-          <div className="kpi-value kpi-accent">₱36.2M</div>
-          <div className="kpi-delta up">▲ Jun 2026</div>
+          <div className="kpi-value kpi-accent">₱{(totalRevenue / 1000000).toFixed(1)}M</div>
+          <div className="kpi-delta up">▲ Jun 2026 · 20 branches</div>
         </div>
         <div className="kpi-card">
           <div className="kpi-label">Avg Collection Rate</div>
-          <div className="kpi-value">84.8%</div>
-          <div className="kpi-delta up">▲ Across 20 branches</div>
+          <div className="kpi-value">{avgCollectionRate}%</div>
+          <div className="kpi-delta up">▲ Across all branches</div>
         </div>
         <div className="kpi-card">
           <div className="kpi-label">Top Performing Branch</div>
-          <div className="kpi-value" style={{ fontSize: '1.1rem' }}>Makati Central</div>
-          <div className="kpi-delta up">▲ ₱2.85M revenue</div>
+          <div className="kpi-value" style={{ fontSize: '1.1rem' }}>{topBranch.name}</div>
+          <div className="kpi-delta up">▲ ₱{(topBranch.revenue / 1000000).toFixed(2)}M revenue</div>
         </div>
         <div className="kpi-card">
           <div className="kpi-label">Branches at Risk</div>
-          <div className="kpi-value">3</div>
-          <div className="kpi-delta down">▼ Collection rate &lt;80%</div>
+          <div className="kpi-value">{negativGrowthBranches.length}</div>
+          <div className="kpi-delta down">▼ Negative growth this month</div>
         </div>
       </div>
 
@@ -69,7 +75,7 @@ export default function BranchFinancials() {
                   <th>Region</th>
                   <th>Revenue</th>
                   <th>Collection Rate</th>
-                  <th>Growth</th>
+                  <th>MoM Growth</th>
                   <th>Receivables</th>
                 </tr>
               </thead>
@@ -118,7 +124,7 @@ export default function BranchFinancials() {
               <div className="kpi-label">Monthly Revenue</div>
               <div className="kpi-value kpi-accent">₱{(detail.revenue / 1000000).toFixed(2)}M</div>
               <div className={`kpi-delta ${detail.growth >= 0 ? 'up' : 'down'}`}>
-                {detail.growth >= 0 ? '▲' : '▼'} {Math.abs(detail.growth)}% growth
+                {detail.growth >= 0 ? '▲' : '▼'} {Math.abs(detail.growth)}% MoM growth
               </div>
             </div>
             <div className="grid-2 mb-16" style={{ gap: 8 }}>
@@ -148,7 +154,7 @@ export default function BranchFinancials() {
               <LineChart data={trendData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e0e6ef" />
                 <XAxis dataKey="month" tick={{ fontSize: 10 }} />
-                <YAxis tick={{ fontSize: 10 }} tickFormatter={v => `₱${(v/1000).toFixed(0)}K`} />
+                <YAxis tick={{ fontSize: 10 }} tickFormatter={v => `₱${(v / 1000).toFixed(0)}K`} />
                 <Tooltip formatter={v => `₱${v.toLocaleString()}`} />
                 <Line type="monotone" dataKey="revenue" stroke="#002d72" strokeWidth={2} dot={{ r: 3 }} />
               </LineChart>

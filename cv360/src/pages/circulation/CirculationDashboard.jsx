@@ -1,7 +1,27 @@
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import KPICard from '../../components/KPICard';
 import InsightPanel from '../../components/InsightPanel';
-import { revenueTrend, revenueSources, branches } from '../../data/circulation';
+import { revenueTrend, revenueSources, branches, agingBuckets } from '../../data/circulation';
+
+// --- computed from data ---
+const totalRevenue = revenueSources.reduce((s, r) => s + r.value, 0);
+const totalReceivables = branches.reduce((s, b) => s + b.receivables, 0);
+const weightedCollectionRate =
+  branches.reduce((s, b) => s + b.revenue * b.collectionRate, 0) /
+  branches.reduce((s, b) => s + b.revenue, 0);
+
+// Revenue Health Score formula (from DEPLOYMENT_STORIES CIRC-001):
+// Collection Rate 40% | Reconciliation Rate 25% | Settlement Timeliness 20% | Overdue Health 15%
+const RECONCILIATION_RATE = 94.2; // from Reconciliation screen matched-transaction dataset
+const SETTLEMENT_TIMELINESS = 88;  // estimated — no disbursement-date data in dataset
+const overdueRatio = agingBuckets.filter(b => b.label.includes('61') || b.label.includes('90+')).reduce((s, b) => s + b.pct, 0);
+const overdueHealth = 100 - overdueRatio;
+const healthScore = Math.round(
+  weightedCollectionRate * 0.40 +
+  RECONCILIATION_RATE    * 0.25 +
+  SETTLEMENT_TIMELINESS  * 0.20 +
+  overdueHealth          * 0.15
+);
 
 const topBranches = [...branches].sort((a, b) => b.revenue - a.revenue).slice(0, 8);
 const branchData = topBranches.map(b => ({ name: b.name.split(' ')[0], revenue: +(b.revenue / 1000000).toFixed(2) }));
@@ -15,27 +35,32 @@ const insights = [
 ];
 
 export default function CirculationDashboard() {
+  const ringColor = healthScore >= 85 ? '#00b388' : healthScore >= 70 ? '#f6ad55' : '#e53e3e';
+
   return (
     <div>
       <div style={{ marginBottom: 24 }}>
         <div className="flex items-center gap-12" style={{ marginBottom: 8 }}>
-          <div className="score-circle large">
-            <div className="score-circle-val">87</div>
+          <div className="score-circle large" style={{ borderColor: ringColor }}>
+            <div className="score-circle-val" style={{ color: ringColor }}>{healthScore}</div>
             <div className="score-circle-label">Health Score</div>
           </div>
           <div>
             <h1>Revenue Health Overview</h1>
             <p className="text-muted text-sm mt-4">Financial circulation status as of June 8, 2026</p>
+            <p className="text-xs text-muted mt-4" style={{ color: '#94a3b8' }}>
+              Score = Collection Rate (40%) · Reconciliation Rate (25%) · Settlement Timeliness (20%) · Overdue Health (15%)
+            </p>
           </div>
         </div>
       </div>
 
       <div className="kpi-grid">
-        <KPICard label="Total Revenue (Jun)" value="₱36.2M" delta="+12.4% vs May" deltaType="up" />
-        <KPICard label="Collection Rate" value="86%" delta="+1.2 pts" deltaType="up" accent />
-        <KPICard label="Outstanding Receivables" value="₱5.41M" delta="+₱240K vs May" deltaType="down" />
+        <KPICard label="Total Revenue (Jun)" value={`₱${(totalRevenue / 1000000).toFixed(1)}M`} delta="+12.4% vs May" deltaType="up" />
+        <KPICard label="Collection Rate" value={`${weightedCollectionRate.toFixed(1)}%`} delta="+1.2 pts vs May" deltaType="up" accent />
+        <KPICard label="Outstanding Receivables" value={`₱${(totalReceivables / 1000000).toFixed(2)}M`} delta="Across 20 branches" deltaType="down" />
         <KPICard label="Pending Settlements" value="₱290,100" delta="Due July 15" deltaType="neutral" />
-        <KPICard label="Matched Transactions" value="1,842" delta="94.2% match rate" deltaType="up" />
+        <KPICard label="Matched Transactions" value="1,842" delta={`${RECONCILIATION_RATE}% match rate`} deltaType="up" />
       </div>
 
       <div className="grid-7-5" style={{ marginBottom: 20 }}>
@@ -62,7 +87,7 @@ export default function CirculationDashboard() {
               <Pie data={revenueSources} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={70} innerRadius={35}>
                 {revenueSources.map((entry, i) => <Cell key={i} fill={entry.color} />)}
               </Pie>
-              <Tooltip formatter={(v) => `₱${(v/1000000).toFixed(1)}M`} />
+              <Tooltip formatter={(v) => `₱${(v / 1000000).toFixed(1)}M`} />
             </PieChart>
           </ResponsiveContainer>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>

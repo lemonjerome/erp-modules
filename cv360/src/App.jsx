@@ -42,7 +42,7 @@ export default function App() {
 
   return (
     <Layout module={module} setModule={setModule} page={page} setPage={setPage}>
-      <PageComponent />
+      <PageComponent setPage={setPage} />
     </Layout>
   );
 }
