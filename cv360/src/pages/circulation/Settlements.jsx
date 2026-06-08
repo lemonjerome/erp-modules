@@ -1,7 +1,5 @@
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { stakeholders, settlementRules } from '../../data/circulation';
-
-const ruleColors = ['#002d72', '#00b388', '#66b9f4', '#ffe3d4'];
 
 export default function Settlements() {
   return (

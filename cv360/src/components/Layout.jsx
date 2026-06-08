@@ -1,6 +1,6 @@
 import {
   BarChart2, DollarSign, RefreshCw, HandCoins, ClipboardList, TrendingUp, Building2,
-  Activity, Radio, Target, Lightbulb, BookOpen, Star, Users
+  Activity, Radio, Target, Lightbulb, BookOpen, Star
 } from 'lucide-react';
 
 const CIRCULATION_NAV = [

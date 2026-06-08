@@ -1,4 +1,4 @@
-import { GraduationCap, MessageCircle, HeartPulse, BookOpen, ClipboardCheck, Star, AlertTriangle, TrendingDown, Activity } from 'lucide-react';
+import { GraduationCap, MessageCircle, HeartPulse, BookOpen, ClipboardCheck, Star, TrendingDown, Activity } from 'lucide-react';
 import { riskEmployees } from '../../data/vitals';
 
 const rootCauses = [

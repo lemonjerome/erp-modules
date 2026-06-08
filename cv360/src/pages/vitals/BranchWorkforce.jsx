@@ -122,7 +122,7 @@ export default function BranchWorkforce() {
                 ['KPI Rate', `${detail.kpiRate}%`, 'badge-navy'],
                 ['Capability', detail.capabilityScore, 'badge-blue'],
                 ['Risk Flags', detail.risks, detail.risks >= 3 ? 'badge-red' : detail.risks > 0 ? 'badge-yellow' : 'badge-green'],
-              ].map(([l, v, cls], i) => (
+              ].map(([l, v], i) => (
                 <div key={i} style={{ background: 'var(--bg)', borderRadius: 8, padding: '10px 12px' }}>
                   <div className="text-xs text-muted">{l}</div>
                   <div className="font-bold text-navy mt-4">{v}</div>
