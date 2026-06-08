@@ -1,4 +1,4 @@
-import { TrendingUp, Search, DollarSign, BarChart2, Zap } from 'lucide-react';
+import { TrendingUp, Search, DollarSign, BarChart2, Zap, Siren } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { forecastSeries } from '../../data/circulation';
 
@@ -12,6 +12,7 @@ const liabilityData = [
 ];
 
 const execRecommendations = [
+  { Icon: Siren, text: 'Zamboanga West — 94 days past due, ₱197,200 outstanding. Escalate to legal immediately and freeze new credit extensions pending resolution.', type: 'critical', border: '#7f1d1d' },
   { Icon: TrendingUp, text: 'Launch HMO collection campaign for overdue accounts exceeding 30 days', type: 'action', border: '#00b388' },
   { Icon: Search, text: 'Review Cebu North and General Santos branch performance — collection rates below target', type: 'warning', border: '#f6ad55' },
   { Icon: DollarSign, text: 'Prepare ₱291,100 in settlement funding for stakeholder disbursements due July 15', type: 'info', border: '#66b9f4' },
