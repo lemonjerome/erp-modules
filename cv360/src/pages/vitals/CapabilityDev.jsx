@@ -33,7 +33,7 @@ export default function CapabilityDev() {
       <div className="kpi-grid mb-24">
         <div className="kpi-card">
           <div className="kpi-label">Capability Health Score</div>
-          <div className="kpi-value kpi-accent">79/100</div>
+          <div className="kpi-value kpi-accent">78/100</div>
           <div className="kpi-delta down">▼ -1 pt (skill gaps widening)</div>
         </div>
         <div className="kpi-card">
@@ -44,7 +44,7 @@ export default function CapabilityDev() {
         <div className="kpi-card">
           <div className="kpi-label">Active Learning Plans</div>
           <div className="kpi-value">7</div>
-          <div className="kpi-delta neutral">● 73 employees enrolled</div>
+          <div className="kpi-delta neutral">● 75 employees enrolled</div>
         </div>
         <div className="kpi-card">
           <div className="kpi-label">Avg Completion Rate</div>

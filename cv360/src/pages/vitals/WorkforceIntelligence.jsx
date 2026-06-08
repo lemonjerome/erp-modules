@@ -1,6 +1,10 @@
 import { GraduationCap, MessageCircle, HeartPulse, BookOpen, ClipboardCheck, Star, TrendingDown, Activity } from 'lucide-react';
 import { riskEmployees } from '../../data/vitals';
 
+const burnoutCount = riskEmployees.filter(e => e.risk === 'Burnout').length;     // 2
+const turnoverCount = riskEmployees.filter(e => e.risk === 'Turnover').length;   // 1
+const performCount = riskEmployees.filter(e => e.risk === 'Performance').length; // 3
+
 const rootCauses = [
   { issue: 'Customer Support Satisfaction Drop', cause: 'Communication Skill Gap', action: 'Communication Training Program', branch: 'Multiple Branches', severity: 'high' },
   { issue: 'Doctor Follow-Up Non-Compliance', cause: 'Workflow & Documentation Gap', action: 'Documentation Workshop', branch: 'Davao Central', severity: 'medium' },
@@ -27,7 +31,7 @@ export default function WorkforceIntelligence() {
               <HeartPulse size={20} strokeWidth={1.75} />
             </div>
           </div>
-          <div className="risk-num red">3</div>
+          <div className="risk-num red">{burnoutCount}</div>
           <div className="risk-label">Burnout Risk</div>
           <div className="risk-sub">Immediate attention</div>
         </div>
@@ -37,7 +41,7 @@ export default function WorkforceIntelligence() {
               <TrendingDown size={20} strokeWidth={1.75} />
             </div>
           </div>
-          <div className="risk-num yellow">2</div>
+          <div className="risk-num yellow">{turnoverCount}</div>
           <div className="risk-label">Turnover Risk</div>
           <div className="risk-sub">High priority</div>
         </div>
@@ -47,7 +51,7 @@ export default function WorkforceIntelligence() {
               <Activity size={20} strokeWidth={1.75} />
             </div>
           </div>
-          <div className="risk-num blue">4</div>
+          <div className="risk-num blue">{performCount}</div>
           <div className="risk-label">Performance Risk</div>
           <div className="risk-sub">Coaching needed</div>
         </div>

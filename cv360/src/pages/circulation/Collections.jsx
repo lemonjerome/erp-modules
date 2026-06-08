@@ -29,7 +29,7 @@ export default function Collections() {
         </div>
         <div className="kpi-card">
           <div className="kpi-label">Collection Rate</div>
-          <div className="kpi-value kpi-accent">86%</div>
+          <div className="kpi-value kpi-accent">85.8%</div>
           <div className="kpi-delta up">▲ +1.2 pts vs last month</div>
         </div>
         <div className="kpi-card">

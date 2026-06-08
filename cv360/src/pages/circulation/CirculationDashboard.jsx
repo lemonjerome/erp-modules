@@ -27,7 +27,7 @@ const topBranches = [...branches].sort((a, b) => b.revenue - a.revenue).slice(0,
 const branchData = topBranches.map(b => ({ name: b.name.split(' ')[0], revenue: +(b.revenue / 1000000).toFixed(2) }));
 
 const insights = [
-  { type: 'positive', text: 'Revenue increased 12.4% month-over-month, driven by Teleconsultation and Pharmacy growth.' },
+  { type: 'positive', text: 'Revenue reached ₱36.2M in June (+2.3% MoM) — Teleconsultation and Pharmacy remain top sources.' },
   { type: 'positive', text: 'Cebu City Main posted highest growth at +22% — recommend capacity expansion.' },
   { type: 'warning', text: 'HMO collections averaging 14-day delay — escalation recommended for Maxicare accounts.' },
   { type: 'negative', text: 'General Santos and Zamboanga showing negative growth — review branch operations.' },
@@ -56,11 +56,11 @@ export default function CirculationDashboard() {
       </div>
 
       <div className="kpi-grid">
-        <KPICard label="Total Revenue (Jun)" value={`₱${(totalRevenue / 1000000).toFixed(1)}M`} delta="+12.4% vs May" deltaType="up" />
+        <KPICard label="Total Revenue (Jun)" value={`₱${(totalRevenue / 1000000).toFixed(1)}M`} delta="+2.3% vs May" deltaType="up" />
         <KPICard label="Collection Rate" value={`${weightedCollectionRate.toFixed(1)}%`} delta="+1.2 pts vs May" deltaType="up" accent />
         <KPICard label="Outstanding Receivables" value={`₱${(totalReceivables / 1000000).toFixed(2)}M`} delta="Across 20 branches" deltaType="down" />
-        <KPICard label="Pending Settlements" value="₱290,100" delta="Due July 15" deltaType="neutral" />
-        <KPICard label="Matched Transactions" value="1,842" delta={`${RECONCILIATION_RATE}% match rate`} deltaType="up" />
+        <KPICard label="Pending Settlements" value="₱291,100" delta="Due July 15" deltaType="neutral" />
+        <KPICard label="Matched Transactions" value="1,734" delta={`${RECONCILIATION_RATE}% match rate`} deltaType="up" />
       </div>
 
       <div className="grid-7-5" style={{ marginBottom: 20 }}>

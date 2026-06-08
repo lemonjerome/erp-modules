@@ -14,7 +14,7 @@ const liabilityData = [
 const execRecommendations = [
   { Icon: TrendingUp, text: 'Launch HMO collection campaign for overdue accounts exceeding 30 days', type: 'action', border: '#00b388' },
   { Icon: Search, text: 'Review Cebu North and General Santos branch performance — collection rates below target', type: 'warning', border: '#f6ad55' },
-  { Icon: DollarSign, text: 'Prepare ₱230,400 in settlement funding for stakeholder disbursements due July 15', type: 'info', border: '#66b9f4' },
+  { Icon: DollarSign, text: 'Prepare ₱291,100 in settlement funding for stakeholder disbursements due July 15', type: 'info', border: '#66b9f4' },
   { Icon: BarChart2, text: 'Cebu City Main and Pasig East are top growth branches — consider resource expansion', type: 'positive', border: '#00b388' },
   { Icon: Zap, text: 'Automate recurring insurance reconciliation to reduce 14-day average delay', type: 'action', border: '#002d72' },
 ];

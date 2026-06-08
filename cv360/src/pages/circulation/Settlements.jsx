@@ -7,7 +7,7 @@ export default function Settlements() {
       <div className="kpi-grid mb-24">
         <div className="kpi-card">
           <div className="kpi-label">Total Disbursed (Jun)</div>
-          <div className="kpi-value kpi-accent">₱1.74M</div>
+          <div className="kpi-value kpi-accent">₱1.70M</div>
           <div className="kpi-delta up">▲ 8 stakeholders</div>
         </div>
         <div className="kpi-card">

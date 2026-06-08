@@ -10,7 +10,16 @@ const roles = [
   { key: 'managers', Icon: Building2, label: 'Branch Managers' },
 ];
 
-const healthScores = { doctors: 84, support: 79, pharmacy: 90, managers: 80 };
+function computeRoleScore(kpis) {
+  const totalWeight = kpis.reduce((s, k) => s + k.weight, 0);
+  return Math.round(kpis.reduce((s, k) => s + k.score * k.weight, 0) / totalWeight);
+}
+const healthScores = {
+  doctors:  computeRoleScore(kpiFramework.doctors),   // 85
+  support:  computeRoleScore(kpiFramework.support),   // 82
+  pharmacy: computeRoleScore(kpiFramework.pharmacy),  // 89
+  managers: computeRoleScore(kpiFramework.managers),  // 80
+};
 
 export default function KPIIntelligence() {
   const [role, setRole] = useState('doctors');
