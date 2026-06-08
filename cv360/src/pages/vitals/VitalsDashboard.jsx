@@ -69,8 +69,8 @@ export default function VitalsDashboard({ setPage }) {
     <div>
       <div className="flex items-center gap-12 mb-24">
         <div className="score-circle large" style={{ borderColor: ringColor }}>
-          <div className="score-circle-val" style={{ color: ringColor }}>{whScore}</div>
-          <div className="score-circle-label">WH Score</div>
+          <div className="score-circle-val" style={{ color: ringColor, fontFamily: "'Libre Baskerville', serif" }}>{whScore}</div>
+          <div className="score-circle-label" style={{ color: ringColor }}>WH Score</div>
         </div>
         <div>
           <h1>Workforce Health Overview</h1>

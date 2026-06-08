@@ -42,8 +42,8 @@ export default function CirculationDashboard() {
       <div style={{ marginBottom: 24 }}>
         <div className="flex items-center gap-12" style={{ marginBottom: 8 }}>
           <div className="score-circle large" style={{ borderColor: ringColor }}>
-            <div className="score-circle-val" style={{ color: ringColor }}>{healthScore}</div>
-            <div className="score-circle-label">Health Score</div>
+            <div className="score-circle-val" style={{ color: ringColor, fontFamily: "'Libre Baskerville', serif" }}>{healthScore}</div>
+            <div className="score-circle-label" style={{ color: ringColor }}>RH Score</div>
           </div>
           <div>
             <h1>Revenue Health Overview</h1>
