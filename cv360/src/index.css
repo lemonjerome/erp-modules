@@ -157,6 +157,7 @@ a { text-decoration: none; color: inherit; }
   border-radius: 50%;
   background: var(--bg);
   opacity: 0.8;
+  z-index: 0;
 }
 
 .kpi-card::before {
@@ -168,12 +169,13 @@ a { text-decoration: none; color: inherit; }
   height: 60px;
   border-radius: 50% 0 0 0;
   background: rgba(0,179,136,0.07);
+  z-index: 0;
 }
 
-.kpi-label { font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 7px; }
-.kpi-value { font-family: 'Libre Baskerville', serif; font-size: 1.65rem; font-weight: 700; color: var(--navy); line-height: 1.1; }
+.kpi-label { position: relative; z-index: 1; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 7px; }
+.kpi-value { position: relative; z-index: 1; font-family: 'Libre Baskerville', serif; font-size: 1.65rem; font-weight: 700; color: var(--navy); line-height: 1.1; }
 .kpi-accent { color: var(--teal); }
-.kpi-delta { font-size: 0.75rem; font-weight: 500; margin-top: 5px; }
+.kpi-delta { position: relative; z-index: 1; font-size: 0.75rem; font-weight: 500; margin-top: 5px; }
 .kpi-delta.up { color: var(--teal); }
 .kpi-delta.down { color: #e53e3e; }
 .kpi-delta.neutral { color: #6b7280; }
@@ -298,9 +300,12 @@ a { text-decoration: none; color: inherit; }
   height: 60px;
   border-radius: 50%;
   background: rgba(0,179,136,0.05);
+  z-index: 0;
 }
 
 .signal-icon-box {
+  position: relative;
+  z-index: 1;
   width: 46px;
   height: 46px;
   border-radius: 50%;
@@ -311,23 +316,23 @@ a { text-decoration: none; color: inherit; }
   color: var(--teal);
 }
 
-.signal-card .signal-name { font-size: 0.75rem; font-weight: 600; color: var(--navy); }
-.signal-card .signal-count { font-size: 1.15rem; font-weight: 700; color: var(--teal); }
-.signal-card .signal-label { font-size: 0.68rem; color: #6b7280; }
+.signal-card .signal-name { position: relative; z-index: 1; font-size: 0.75rem; font-weight: 600; color: var(--navy); }
+.signal-card .signal-count { position: relative; z-index: 1; font-size: 1.15rem; font-weight: 700; color: var(--teal); }
+.signal-card .signal-label { position: relative; z-index: 1; font-size: 0.68rem; color: #6b7280; }
 
 /* ─── Risk cards ─────────────────────────────── */
 .risk-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .risk-card { background: var(--text-white); border-radius: var(--radius); padding: 18px 16px; box-shadow: var(--shadow); text-align: center; position: relative; overflow: hidden; }
-.risk-card::before { content: ''; position: absolute; top: 0; right: 0; width: 50px; height: 50px; border-radius: 0 var(--radius) 0 100%; }
+.risk-card::before { content: ''; position: absolute; top: 0; right: 0; width: 50px; height: 50px; border-radius: 0 var(--radius) 0 100%; z-index: 0; }
 .risk-card.red::before { background: rgba(229,62,62,0.12); }
 .risk-card.yellow::before { background: rgba(246,173,85,0.12); }
 .risk-card.blue::before { background: rgba(102,185,244,0.12); }
-.risk-num { font-family: 'Libre Baskerville', serif; font-size: 2.1rem; font-weight: 700; }
+.risk-num { position: relative; z-index: 1; font-family: 'Libre Baskerville', serif; font-size: 2.1rem; font-weight: 700; }
 .risk-num.red { color: #e53e3e; }
 .risk-num.yellow { color: #d97706; }
 .risk-num.blue { color: #0066b3; }
-.risk-label { font-size: 0.82rem; font-weight: 500; color: var(--navy); margin-top: 3px; }
-.risk-sub { font-size: 0.72rem; color: #6b7280; margin-top: 4px; }
+.risk-label { position: relative; z-index: 1; font-size: 0.82rem; font-weight: 500; color: var(--navy); margin-top: 3px; }
+.risk-sub { position: relative; z-index: 1; font-size: 0.72rem; color: #6b7280; margin-top: 4px; }
 
 /* ─── Tab strip ──────────────────────────────── */
 .tab-strip { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 16px; }
